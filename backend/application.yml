@@ -1,0 +1,59 @@
+spring:
+  security:
+    user:
+      name: admin
+      password: 123456
+      roles: ADMIN
+  application:
+    name: fy-income-tracker
+  
+  # 数据库配置 - MySQL
+  datasource:
+    url: jdbc:mysql://localhost:3306/fy_income_tracker?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  
+  # JPA配置
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+  
+  # Jackson配置
+  jackson:
+    default-property-inclusion: non_null
+    serialization:
+      write-dates-as-timestamps: false
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+# 服务器配置
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+  compression:
+    enabled: true
+
+# 日志配置
+logging:
+  level:
+    root: INFO
+    com.fy: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+
+# JWT配置
+jwt:
+  secret: your_secret_key_change_this_in_production
+  expiration: 86400000  # 24小时
+
+# 应用自定义配置
+app:
+  cors:
+    allowed-origins: http://localhost:3000,http://localhost:8080
