@@ -25,8 +25,8 @@
           </div>
         </el-tab-pane>
 
-        <!-- 收益维护选项卡 -->
-        <el-tab-pane label="收益维护" name="incomeType">
+        <!-- 任务维护选项卡 -->
+        <el-tab-pane label="任务维护" name="incomeType">
           <div class="tab-content">
             <div class="button-bar">
               <el-button type="primary" @click="addIncomeType">新增</el-button>
