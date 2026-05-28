@@ -1,11 +1,9 @@
 package com.fy.incometracker.repository;
 
-import com.fy.incometracker.entity.Account;
+import com.fy.incometracker.entity.Faction;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
-public interface AccountRepository extends JpaRepository<Account, Long> {
+public interface FactionRepository extends JpaRepository<Faction, Long> {
 }

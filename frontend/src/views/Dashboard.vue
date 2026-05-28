@@ -83,16 +83,16 @@
         <el-table-column
           prop="accountName"
           label="账号"
-          width="100"
+          width="150"
         />
         <el-table-column
           prop="recordDate"
           label="日期"
-          width="120"
+          width="150"
         />
         <el-table-column
           label="总收益"
-          width="120"
+          width="150"
         >
           <template #default="{ row }">
             {{ formatTwoWan(row.totalIncome) }}
@@ -100,7 +100,7 @@
         </el-table-column>
         <el-table-column
           label="净收益"
-          width="120"
+          width="150"
         >
           <template #default="{ row }">
             {{ formatTwoWan(row.netIncome) }}

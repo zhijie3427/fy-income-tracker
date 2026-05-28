@@ -106,9 +106,14 @@ const loadAggregatedStats = async () => {
             money: 0
           }
         }
+
+        const rewardMoney = Array.isArray(income.itemRewards)
+          ? income.itemRewards.reduce((sum, item) => sum + Number(item.money || 0) * Number(item.quantity || 1), 0)
+          : 0
+
         grouped[key].experience += income.experience || 0
-        grouped[key].money += income.money || 0
-        total += income.money || 0
+        grouped[key].money += Number(income.money || 0) + rewardMoney
+        total += Number(income.money || 0) + rewardMoney
         count += 1
       })
     })

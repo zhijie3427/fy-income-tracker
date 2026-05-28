@@ -25,10 +25,8 @@ public class IncomeRecordService {
         if (record.getUserId() == null) {
             record.setUserId(1L);
         }
-        // ensure child entries reference parent
-        if (record.getIncomeEntries() != null) {
-            record.getIncomeEntries().forEach(e -> e.setIncomeRecord(record));
-        }
+        bindChildren(record);
+        recalculateTotals(record);
         return incomeRecordRepository.save(record);
     }
 
@@ -36,10 +34,41 @@ public class IncomeRecordService {
         if (record.getUserId() == null) {
             record.setUserId(1L);
         }
-        if (record.getIncomeEntries() != null) {
-            record.getIncomeEntries().forEach(e -> e.setIncomeRecord(record));
-        }
+        bindChildren(record);
+        recalculateTotals(record);
         return incomeRecordRepository.save(record);
+    }
+
+    private void bindChildren(IncomeRecord record) {
+        if (record.getIncomeEntries() == null) {
+            return;
+        }
+        record.getIncomeEntries().forEach(entry -> {
+            entry.setIncomeRecord(record);
+            if (entry.getItemRewards() != null) {
+                entry.getItemRewards().forEach(item -> item.setIncomeEntry(entry));
+            }
+        });
+    }
+
+    private void recalculateTotals(IncomeRecord record) {
+        BigDecimal totalIncome = BigDecimal.ZERO;
+        if (record.getIncomeEntries() != null) {
+            for (IncomeEntry entry : record.getIncomeEntries()) {
+                BigDecimal entryMoney = entry.getMoney() == null ? BigDecimal.ZERO : entry.getMoney();
+                totalIncome = totalIncome.add(entryMoney);
+
+                if (entry.getItemRewards() != null) {
+                    for (var item : entry.getItemRewards()) {
+                        BigDecimal quantity = BigDecimal.valueOf(item.getQuantity() == null ? 1 : item.getQuantity());
+                        BigDecimal itemMoney = item.getMoney() == null ? BigDecimal.ZERO : item.getMoney();
+                        totalIncome = totalIncome.add(itemMoney.multiply(quantity));
+                    }
+                }
+            }
+        }
+        record.setTotalIncome(totalIncome);
+        record.setNetIncome(record.getTotalIncome() == null ? BigDecimal.ZERO : record.getTotalIncome());
     }
 
     public List<IncomeRecord> getAllRecords() {
